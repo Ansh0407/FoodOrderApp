@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "75193715135",
+    "project_id": "hostelbites-2591e",
+    "storage_bucket": "hostelbites-2591e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75193715135:android:cd0c69e39202bef54af90a",
+        "android_client_info": {
+          "package_name": "com.android.foodorderapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtf5kyWwlBQ0l4alFh3Ldew1bej8sLyQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75193715135:android:e2c72cfd5165c5214af90a",
+        "android_client_info": {
+          "package_name": "com.example.hostelbites"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtf5kyWwlBQ0l4alFh3Ldew1bej8sLyQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
