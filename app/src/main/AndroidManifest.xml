@@ -16,32 +16,16 @@
         android:theme="@style/Theme.FoodOrderApp">
         <activity
             android:name=".Payment"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".AboutUsActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".ProfileActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".SubscriptionActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".VerifyOTPActivity"
             android:screenOrientation="portrait"
@@ -72,8 +56,19 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
+
+        <!-- Add the following lines for Razorpay components -->
+        <activity
+            android:name="com.razorpay.CheckoutActivity"
+            android:exported="true" />
+        <receiver
+            android:name="com.razorpay.RzpTokenReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.razorpay.TOKEN_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
