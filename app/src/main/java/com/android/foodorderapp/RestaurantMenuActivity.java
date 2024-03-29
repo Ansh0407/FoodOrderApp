@@ -173,7 +173,7 @@ public class RestaurantMenuActivity extends AppCompatActivity implements MenuLis
                 startActivity(new Intent(RestaurantMenuActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout CLicked !!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(RestaurantMenuActivity.this, SendOTPActivity.class));
                 break;
         }
         drawerLayout.closeDrawers(); // Close the drawer after handling the click

@@ -8,29 +8,24 @@
     tools:context=".PlaceYourOrderActivity"
     tools:openDrawer="start">
 
-    <!-- Main content container -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- LinearLayout to hold Toolbar and content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Toolbar -->
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FF9D01">
 
-                <!-- Optionally, add any views you want in the Toolbar -->
 
             </androidx.appcompat.widget.Toolbar>
 
-            <!-- ConstraintLayout for the rest of the content -->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -88,25 +83,60 @@
                     android:layout_marginBottom="05dp"
                     android:hint="Enter your Reg-No"/>
 
-                <EditText android:id="@+id/inputAddress"
+                <TextView
+                    android:id="@+id/floortext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose your floor"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputName"
+                    android:visibility="gone"/>
+
+                <RadioGroup
+                    android:id="@+id/floorRadioGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/inputName"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/floortext"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="05dp"
-                    android:layout_marginBottom="05dp"
-                    android:hint="Enter your floor no"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:layout_marginBottom="05dp">
+
+                    <RadioButton
+                        android:id="@+id/floor1RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Floor 1"
+                        android:checked="true"
+                        android:layout_marginHorizontal="20dp"/>
+
+                    <RadioButton
+                        android:id="@+id/floor2RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Floor 2"
+                        android:layout_marginHorizontal="20dp"/>
+
+                    <RadioButton
+                        android:id="@+id/floor3RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Floor 3"
+                        android:layout_marginHorizontal="20dp"/>
+
+                </RadioGroup>
+
 
                 <EditText android:id="@+id/inputCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/inputAddress"
+                    app:layout_constraintTop_toBottomOf="@id/floorRadioGroup"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="05dp"
@@ -114,25 +144,54 @@
                     android:hint="Enter your room no"
                     android:visibility="gone"/>
 
-                <EditText android:id="@+id/inputState"
+                <TextView
+                    android:id="@+id/hosteltext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose your hostel"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputCity"
+                    android:visibility="gone"/>
+
+                <RadioGroup
+                    android:id="@+id/hostelRadioGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/inputCity"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/hosteltext"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="05dp"
-                    android:layout_marginBottom="05dp"
-                    android:hint="Enter your hostel name"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:layout_marginBottom="05dp">
+
+                    <RadioButton
+                        android:id="@+id/jonasHallRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jonas Hall"
+                        android:layout_marginHorizontal="40dp"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:id="@+id/stKurikoseHallRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="40dp"
+                        android:text="St. Kurikose Elias Hall"/>
+
+                </RadioGroup>
+
+
 
                 <EditText android:id="@+id/inputZip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/inputState"
+                    app:layout_constraintTop_toBottomOf="@id/hostelRadioGroup"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="05dp"
@@ -142,65 +201,12 @@
                     android:maxLength="5"
                     android:visibility="gone"/>
 
-                <TextView android:id="@+id/tvCardDetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/inputZip"
-                    android:layout_margin="10dp"
-                    android:text="Card Details"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
-
-                <EditText android:id="@+id/inputCardNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvCardDetails"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="05dp"
-                    android:layout_marginBottom="05dp"
-                    android:hint="Enter Card Number"
-                    android:inputType="number"
-                    android:maxLength="16"/>
-
-                <EditText android:id="@+id/inputCardExpiry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/inputCardNumber"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="05dp"
-                    android:layout_marginBottom="05dp"
-                    android:hint="Enter Card expiry(mm/yyyy)"
-                    android:inputType="number"
-                    android:maxLength="6"/>
-
-                <EditText android:id="@+id/inputCardPin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/inputCardExpiry"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="05dp"
-                    android:layout_marginBottom="05dp"
-                    android:hint="Enter Card pin(3 digits)"
-                    android:inputType="number"
-                    android:maxLength="3"/>
-
                 <TextView android:id="@+id/tvTotalItems"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/inputCardPin"
+                    app:layout_constraintTop_toBottomOf="@+id/inputZip"
                     android:layout_margin="10dp"
                     android:text="Total items in cart"
                     android:textSize="18sp"

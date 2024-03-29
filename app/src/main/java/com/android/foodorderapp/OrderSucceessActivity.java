@@ -400,11 +400,8 @@ public class OrderSucceessActivity extends AppCompatActivity implements Navigati
         mapboxNavigation.unregisterLocationObserver(locationObserver);
     }
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId(); // Get the ID of the clicked item
-
+        int id = item.getItemId();
         switch (id) {
-            // Handle your navigation menu item clicks here
             case R.id.home:
                 startActivity(new Intent(OrderSucceessActivity.this, MainActivity.class));
                 break;
@@ -418,7 +415,7 @@ public class OrderSucceessActivity extends AppCompatActivity implements Navigati
                 startActivity(new Intent(OrderSucceessActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout CLicked !!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(OrderSucceessActivity.this, SendOTPActivity.class));
                 break;
         }
         drawerLayout.closeDrawers();

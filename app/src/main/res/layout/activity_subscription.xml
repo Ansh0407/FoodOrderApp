@@ -38,81 +38,104 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="408dp"
-            android:layout_height="484dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="124dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:orientation="vertical">
 
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="408dp"
-                    android:layout_height="368dp"
-                    android:layout_margin="5dp"
-                    android:orientation="vertical">
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="16dp"
+                    android:text="Subscription Basic ( ₹1200)"
+                    android:textSize="22sp" />
 
-                    <RadioButton
-                        android:layout_marginTop="22dp"
-                        android:id="@+id/radioButton3"
-                        android:layout_width="409dp"
-                        android:layout_height="98dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/white"
-                        android:text="subscription basic            RS 199                         15 days"
-                        android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/radioButton3_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_below="@id/radioButton3"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/subscription_basic_details" />
 
-                    <RadioButton
-                        android:id="@+id/radioButton4"
-                        android:layout_width="411dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="93dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/white"
-                        android:padding="15dp"
-                        android:text="subscription basic+          RS 300      Monthly"
-                        android:textSize="20sp" />
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="16dp"
+                    android:text="Subscription Basic+ (₹ 2400)"
+                    android:textSize="22sp" />
 
-                    <RadioButton
-                        android:id="@+id/radioButton5"
-                        android:layout_width="414dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="96dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/white"
-                        android:padding="8dp"
-                        android:text="subscription premium      RS 499       3Months"
-                        android:textSize="20sp" />
-                </RadioGroup>
+                <TextView
+                    android:id="@+id/radioButton4_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_below="@id/radioButton4"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/subscription_basic_plus_details" />
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="218dp"
-                    android:layout_height="54dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="#FF9D01"
-                    android:text="Subscribe"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="24sp" />
-            </LinearLayout>
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="16dp"
+                    android:text="Subscription Premium (₹ 7000)"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/radioButton5_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_below="@id/radioButton5"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/subscription_premium_details" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/radioGroup"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="#FF9D01"
+                android:text="Subscribe"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:gravity="center" />
 
         </RelativeLayout>
-    </LinearLayout>
 
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/drawer_menu"
+            app:headerLayout="@layout/drawer_header" />
+
+    </LinearLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"

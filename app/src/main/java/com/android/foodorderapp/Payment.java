@@ -27,7 +27,11 @@ public class Payment extends AppCompatActivity implements PaymentResultListener 
         setContentView(R.layout.activity_payment);
 
         txtpaymentstatus = findViewById(R.id.paymentStatus);
-        editAmount = findViewById(R.id.amount);
+        editAmount = findViewById(R.id.amount); // Reference to EditText
+
+        int amount = getIntent().getIntExtra("AMOUNT", 0);
+        editAmount.setText(String.valueOf(amount));
+
         btnpaynow = findViewById(R.id.pay_button);
 
         Checkout.preload(Payment.this);
@@ -35,7 +39,7 @@ public class Payment extends AppCompatActivity implements PaymentResultListener 
         btnpaynow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startPayment(Integer.parseInt(editAmount.getText().toString()));
+                startPayment(amount);
             }
         });
     }

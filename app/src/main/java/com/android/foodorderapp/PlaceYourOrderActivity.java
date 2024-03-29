@@ -1,5 +1,4 @@
 package com.android.foodorderapp;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -20,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,19 +27,27 @@ import com.android.foodorderapp.adapters.PlaceYourOrderAdapter;
 import com.android.foodorderapp.model.Menu;
 import com.android.foodorderapp.model.RestaurantModel;
 import com.google.android.material.navigation.NavigationView;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
-public class PlaceYourOrderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import org.json.JSONObject;
 
-    private EditText inputName, inputAddress, inputCity, inputState, inputZip,inputCardNumber, inputCardExpiry, inputCardPin ;
+public class PlaceYourOrderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PaymentResultListener {
+
+    private EditText inputName, inputAddress, inputCity, inputZip;
     private RecyclerView cartItemsRecyclerView;
     private TextView tvSubtotalAmount, tvDeliveryChargeAmount, tvDeliveryCharge, tvTotalAmount, buttonPlaceYourOrder;
     private SwitchCompat switchDelivery;
     private boolean isDeliveryOn;
     private PlaceYourOrderAdapter placeYourOrderAdapter;
-
+    private RestaurantModel restaurantModel; // Declaring restaurantModel here
+    private RadioGroup hostelRadioGroup;
+    private RadioGroup floorRadioGroup;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Toolbar toolbar;
+    private TextView selectfloor;
+    private TextView selecthostel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +57,12 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        RestaurantModel restaurantModel = getIntent().getParcelableExtra("RestaurantModel");
-
+        restaurantModel = getIntent().getParcelableExtra("RestaurantModel"); // Initializing restaurantModel
+        hostelRadioGroup = findViewById(R.id.hostelRadioGroup);
+        floorRadioGroup = findViewById(R.id.floorRadioGroup);
         toolbar = findViewById(R.id.toolbar);
-
+        selectfloor= findViewById(R.id.floortext);
+        selecthostel=findViewById(R.id.hosteltext);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawerLayout1);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -62,19 +72,14 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Hostel-Bites");
-        }else {
+        } else {
             Log.e("RestaurantMenuActivity", "Action bar is null");
             setTitle("Restaurant List");
         }
 
         inputName = findViewById(R.id.inputName);
-        inputAddress = findViewById(R.id.inputAddress);
         inputCity = findViewById(R.id.inputCity);
-        inputState = findViewById(R.id.inputState);
         inputZip = findViewById(R.id.inputZip);
-        inputCardNumber = findViewById(R.id.inputCardNumber);
-        inputCardExpiry = findViewById(R.id.inputCardExpiry);
-        inputCardPin = findViewById(R.id.inputCardPin);
         tvSubtotalAmount = findViewById(R.id.tvSubtotalAmount);
         tvDeliveryChargeAmount = findViewById(R.id.tvDeliveryChargeAmount);
         tvDeliveryCharge = findViewById(R.id.tvDeliveryCharge);
@@ -87,83 +92,113 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
         buttonPlaceYourOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPlaceOrderButtonClick(restaurantModel);
+                placeOrderWithPayment();
             }
         });
 
         switchDelivery.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    inputAddress.setVisibility(View.VISIBLE);
+                if (isChecked) {
+                    // Show relevant views
                     inputCity.setVisibility(View.VISIBLE);
-                    inputState.setVisibility(View.VISIBLE);
                     inputZip.setVisibility(View.VISIBLE);
                     tvDeliveryChargeAmount.setVisibility(View.VISIBLE);
                     tvDeliveryCharge.setVisibility(View.VISIBLE);
+                    hostelRadioGroup.setVisibility(View.VISIBLE);
+                    floorRadioGroup.setVisibility(View.VISIBLE);
+                    selectfloor.setVisibility(View.VISIBLE);
+                    selecthostel.setVisibility(View.VISIBLE);
                     isDeliveryOn = true;
-                    calculateTotalAmount(restaurantModel);
+                    calculateTotalAmount();
                 } else {
-                    inputAddress.setVisibility(View.GONE);
+                    // Hide relevant views
                     inputCity.setVisibility(View.GONE);
-                    inputState.setVisibility(View.GONE);
                     inputZip.setVisibility(View.GONE);
                     tvDeliveryChargeAmount.setVisibility(View.GONE);
                     tvDeliveryCharge.setVisibility(View.GONE);
+                    hostelRadioGroup.setVisibility(View.GONE);
+                    selectfloor.setVisibility(View.GONE);
+                    selecthostel.setVisibility(View.GONE);
+                    floorRadioGroup.setVisibility(View.GONE);
                     isDeliveryOn = false;
-                    calculateTotalAmount(restaurantModel);
+                    calculateTotalAmount();
                 }
             }
         });
-        initRecyclerView(restaurantModel);
-        calculateTotalAmount(restaurantModel);
+
+
+        initRecyclerView();
+        calculateTotalAmount();
     }
 
-    private void calculateTotalAmount(RestaurantModel restaurantModel) {
+    private void calculateTotalAmount() {
         float subTotalAmount = 0f;
 
-        for(Menu m : restaurantModel.getMenus()) {
+        for (Menu m : restaurantModel.getMenus()) {
             subTotalAmount += m.getPrice() * m.getTotalInCart();
         }
 
-        tvSubtotalAmount.setText("Rs"+String.format("%.2f", subTotalAmount));
-        if(isDeliveryOn) {
-            tvDeliveryChargeAmount.setText("Rs"+String.format("%.2f", restaurantModel.getDelivery_charge()));
-            subTotalAmount += restaurantModel.getDelivery_charge();
+        tvSubtotalAmount.setText("Rs" + String.format("%.2f", subTotalAmount));
+        if (isDeliveryOn) {
+            float deliveryCharge = restaurantModel.getDelivery_charge(); // Get delivery charge
+            tvDeliveryChargeAmount.setText("Rs" + String.format("%.2f", deliveryCharge));
+            subTotalAmount += deliveryCharge;
         }
-        tvTotalAmount.setText("Rs"+String.format("%.2f", subTotalAmount));
+        tvTotalAmount.setText("Rs" + String.format("%.2f", subTotalAmount));
     }
 
-    private void onPlaceOrderButtonClick(RestaurantModel restaurantModel) {
-        if(TextUtils.isEmpty(inputName.getText().toString())) {
+
+    private void placeOrderWithPayment() {
+        if (TextUtils.isEmpty(inputName.getText().toString())) {
             inputName.setError("Please enter name ");
             return;
-        } else if(isDeliveryOn && TextUtils.isEmpty(inputAddress.getText().toString())) {
-            inputAddress.setError("Please enter address ");
-            return;
-        }else if(isDeliveryOn && TextUtils.isEmpty(inputCity.getText().toString())) {
-            inputCity.setError("Please enter city ");
-            return;
-        }else if(isDeliveryOn && TextUtils.isEmpty(inputState.getText().toString())) {
-            inputState.setError("Please enter zip ");
-            return;
-        }else if( TextUtils.isEmpty(inputCardNumber.getText().toString())) {
-            inputCardNumber.setError("Please enter card number ");
-            return;
-        }else if( TextUtils.isEmpty(inputCardExpiry.getText().toString())) {
-            inputCardExpiry.setError("Please enter card expiry ");
-            return;
-        }else if( TextUtils.isEmpty(inputCardPin.getText().toString())) {
-            inputCardPin.setError("Please enter card pin/cvv ");
+        } else if (isDeliveryOn && TextUtils.isEmpty(inputCity.getText().toString())) {
+            inputCity.setError("Please choose room ");
             return;
         }
-        //start success activity..
-        Intent i = new Intent(PlaceYourOrderActivity.this, OrderSucceessActivity.class);
-        i.putExtra("RestaurantModel", restaurantModel);
-        startActivityForResult(i, 1000);
+        startRazorpayPayment();
     }
 
-    private void initRecyclerView(RestaurantModel restaurantModel) {
+    private void startRazorpayPayment() {
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_uDyxnT2mA1Wctb");
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", "HOSTEL_BITES_PAYMENT GATEWAY");
+            jsonObject.put("description", "Enter the Amount to complete payment");
+            jsonObject.put("theme.color", "#FF9D01");
+            jsonObject.put("currency", "INR");
+            jsonObject.put("amount", calculateTotalAmount1() * 100);
+
+            JSONObject retryObj = new JSONObject();
+            retryObj.put("enabled", "true");
+            retryObj.put("max_count", 4);
+
+            jsonObject.put("retry", retryObj);
+
+            checkout.open(PlaceYourOrderActivity.this, jsonObject);
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private int calculateTotalAmount1() {
+        float subTotalAmount = 0f;
+
+        for (Menu m : restaurantModel.getMenus()) {
+            subTotalAmount += m.getPrice() * m.getTotalInCart();
+        }
+
+        if (isDeliveryOn) {
+            subTotalAmount += restaurantModel.getDelivery_charge();
+        }
+
+        return (int) subTotalAmount;
+    }
+
+    private void initRecyclerView() {
         cartItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         placeYourOrderAdapter = new PlaceYourOrderAdapter(restaurantModel.getMenus());
         cartItemsRecyclerView.setAdapter(placeYourOrderAdapter);
@@ -179,11 +214,26 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        Toast.makeText(this, "Payment Successful: " + s, Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(PlaceYourOrderActivity.this, OrderSucceessActivity.class);
+        i.putExtra("RestaurantModel", restaurantModel);
+        startActivityForResult(i, 1000);
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        Toast.makeText(this, "Payment Error: " + s, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case android.R.id.home :
+            case android.R.id.home:
                 finish();
             default:
                 //do nothing
@@ -197,6 +247,7 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
         setResult(Activity.RESULT_CANCELED);
         finish();
     }
+
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId(); // Get the ID of the clicked item
@@ -216,10 +267,11 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
                 startActivity(new Intent(PlaceYourOrderActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout CLicked !!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(PlaceYourOrderActivity.this, SendOTPActivity.class));
                 break;
         }
         drawerLayout.closeDrawers();
         return true;
     }
 }
+

@@ -91,7 +91,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(new Intent(ProfileActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout Clicked !!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ProfileActivity.this, SendOTPActivity.class));
                 break;
         }
 

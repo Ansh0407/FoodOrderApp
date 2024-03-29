@@ -94,10 +94,9 @@ public class AboutUsActivity extends AppCompatActivity implements NavigationView
                 startActivity(new Intent(AboutUsActivity.this, ProfileActivity.class));
                 break;
             case R.id.about_us:
-                // No action needed as user is already on the About Us page
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout Clicked!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(AboutUsActivity.this, SendOTPActivity.class));
                 break;
         }
         drawerLayout.closeDrawers();

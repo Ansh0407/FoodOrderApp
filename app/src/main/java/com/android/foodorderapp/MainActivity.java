@@ -40,21 +40,21 @@ public class MainActivity extends AppCompatActivity implements RestaurantListAda
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout = findViewById(R.id.drawerLayout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+            drawerLayout = findViewById(R.id.drawerLayout);
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawerLayout.addDrawerListener(actionBarDrawerToggle);
+            actionBarDrawerToggle.syncState();
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("Hostel-Bites");
-        } else {
-            Log.e("RestaurantMenuActivity", "Action bar is null");
-            setTitle("Restaurant List");
-        }
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("Hostel-Bites");
+            } else {
+                Log.e("RestaurantMenuActivity", "Action bar is null");
+                setTitle("Restaurant List");
+            }
 
-        NavigationView navigationView = findViewById(R.id.navigationView);
-        navigationView.setNavigationItemSelectedListener(this);
+            NavigationView navigationView = findViewById(R.id.navigationView);
+            navigationView.setNavigationItemSelectedListener(this);
 
         List<RestaurantModel> restaurantModelList = getRestaurantData();
         initRecyclerView(restaurantModelList);

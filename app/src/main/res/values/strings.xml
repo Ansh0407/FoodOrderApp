@@ -2,16 +2,37 @@
     <string name="app_name">HostelBite</string>
     <string name="enter_the_otp_sent_to">Enter the OTP SENT TO</string>
     <string name="we_will_send_you_an_otp">We will send you an OTP</string>
-    <string name="didn_t_recieve_the_otp">Didn\'t recieve the OTP?</string>
+    <string name="didn_t_recieve_the_otp">Didn\'t receive the OTP?</string>
     <string name="resend_otp">RESEND OTP</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="get_otp">Get OTP</string>
     <string name="mapbox_access_token">sk.eyJ1IjoiYW5zaDA0MDciLCJhIjoiY2xzcmM4Y21nMDI0djJqbXU2YXh6OGo4MSJ9.X5OQeuVyhEowt3VTG6RbKQ</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">close navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="tagline">Savor the Flavor, Anytime, Anywhere !</string>
-    <string name="aboutdev">Welcome to Hostel-Bites, your ultimate solution for hassle-free food ordering within your hostel premises! We are a dedicated team of developers, all pursuing our Master\'s in Computer Applications (MCA) at Christ University. With a passion for technology and a shared love for good food, we came together to create an innovative solution to streamline the food ordering experience for hostel residents. Thank you for choosing Hostel-Bites as your preferred food ordering platform. We are excited to embark on this journey with you, revolutionizing hostel dining one bite at a time!
-
-Sincerely,
-The Hostel-Bites Development Team</string>
+    <string name="aboutdev">Welcome to Hostel-Bites, your ultimate solution for hassle-free food ordering within your hostel premises! We are a dedicated team of developers, all pursuing our Master\'s in Computer Applications (MCA) at Christ University. With a passion for technology and a shared love for good food, we came together to create an innovative solution to streamline the food ordering experience for hostel residents. Thank you for choosing Hostel-Bites as your preferred food ordering platform. We are excited to embark on this journey with you, revolutionizing hostel dining one bite at a time! Sincerely, The Hostel-Bites Development Team</string>
+    <string name="subscription_basic_details"><![CDATA[
+        <ul>
+             <li><b>T&C Applied</b></li>
+            <li><b>@15 days</b> basic subscription</li>
+            <li>Includes: 2 meals per day.</li>
+            <li>Options : Choose between North Indian and South Indian cuisine.</li>
+        </ul>
+    ]]></string>
+    <string name="subscription_basic_plus_details"><![CDATA[
+        <ul>
+              <li><b>T&C Applied</b></li>
+             <li><b>@30 days</b> monthly subscription</li>
+            <li>Includes:  3 meals per day.</li>
+            <li>Choose between North Indian, South Indian, and Continental cuisine.</li>
+        </ul>
+    ]]></string>
+    <string name="subscription_premium_details"><![CDATA[
+        <ul>
+             <li><b>T&C Applied</b></li>
+             <li><b>@90 days</b> ultimate 3 months subscription</li>
+            <li>Includes: 3 meals per day with snacks.</li>
+            <li>Options :Choose between North Indian, South Indian, Continental, and Chinese cuisine.</li>
+        </ul>
+    ]]></string>
 </resources>

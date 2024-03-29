@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
-
+import android.text.Html;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,13 +47,12 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
         if (actionBar != null) {
             actionBar.setTitle("Hostel-Bites");
         } else {
-            Log.e("RestaurantMenuActivity", "Action bar is null");
-            setTitle("Restaurant List");
+            Log.e("SubscriptionActivity", "Action bar is null");
+            setTitle("Subscription");
         }
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         radioButton3 = findViewById(R.id.radioButton3);
         radioButton4 = findViewById(R.id.radioButton4);
@@ -64,12 +64,10 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // Reset background color of all RadioButtons
                 radioButton3.setBackgroundColor(ContextCompat.getColor(SubscriptionActivity.this, android.R.color.transparent));
                 radioButton4.setBackgroundColor(ContextCompat.getColor(SubscriptionActivity.this, android.R.color.transparent));
                 radioButton5.setBackgroundColor(ContextCompat.getColor(SubscriptionActivity.this, android.R.color.transparent));
 
-                // Set background color for the selected RadioButton
                 RadioButton selectedRadioButton = findViewById(checkedId);
                 if (selectedRadioButton != null) {
                     selectedRadioButton.setBackgroundColor(ContextCompat.getColor(SubscriptionActivity.this, android.R.color.holo_orange_light));
@@ -77,36 +75,37 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
             }
         });
 
-
-
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check if any RadioButton is selected
                 if (radioGroup.getCheckedRadioButtonId() == -1) {
-                    // No RadioButton selected, show error message
                     Toast.makeText(SubscriptionActivity.this, "Please select a subscription option!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(SubscriptionActivity.this, "Done successful! Proceed to Payment", Toast.LENGTH_SHORT).show();
+                    // Retrieve the selected radio button text and extract the amount
+                    RadioButton selectedRadioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+                    String amountText = selectedRadioButton.getText().toString();
+                    // Remove any non-numeric characters from the string
+                    String numericAmountString = amountText.replaceAll("[^\\d]", "");
+                    // Parse the remaining string as an integer
+                    int amount = Integer.parseInt(numericAmountString);
                     Intent intent = new Intent(SubscriptionActivity.this, Payment.class);
+                    intent.putExtra("AMOUNT", amount);
                     startActivity(intent);
                 }
             }
         });
+        TextView radioButton3Details = findViewById(R.id.radioButton3_details);
+        radioButton3Details.setText(Html.fromHtml(getString(R.string.subscription_basic_details)));
+
+        TextView radioButton4Details = findViewById(R.id.radioButton4_details);
+        radioButton4Details.setText(Html.fromHtml(getString(R.string.subscription_basic_plus_details)));
+
+        TextView radioButton5Details = findViewById(R.id.radioButton5_details);
+        radioButton5Details.setText(Html.fromHtml(getString(R.string.subscription_premium_details)));
     }
 
-    // Function to darken a color
-    private int darkenColor(int color) {
-        float factor = 0.8f;
-        int alpha = android.graphics.Color.alpha(color);
-        int red = (int) (android.graphics.Color.red(color) * factor);
-        int green = (int) (android.graphics.Color.green(color) * factor);
-        int blue = (int) (android.graphics.Color.blue(color) * factor);
-        return android.graphics.Color.argb(alpha, red, green, blue);
-    }
-
+    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId(); // Get the ID of the clicked item
 
         switch (id) {
@@ -115,7 +114,7 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
                 startActivity(new Intent(SubscriptionActivity.this, MainActivity.class));
                 break;
             case R.id.subscription:
-                startActivity(new Intent(SubscriptionActivity.this, SubscriptionActivity.class));
+                // No need to navigate to the same activity again
                 break;
             case R.id.profile:
                 startActivity(new Intent(SubscriptionActivity.this, ProfileActivity.class));
@@ -124,10 +123,15 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
                 startActivity(new Intent(SubscriptionActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout CLicked !!", Toast.LENGTH_SHORT).show();
+                // Perform logout action, e.g., clear session, preferences, etc.
+                // Then navigate to the login or send OTP activity
+                startActivity(new Intent(SubscriptionActivity.this, SendOTPActivity.class));
+                // Finish the current activity to prevent returning to it after logout
+                finish();
                 break;
         }
         drawerLayout.closeDrawers(); // Close the drawer after handling the click
         return true;
     }
+
 }
