@@ -378,5 +378,133 @@
         "url": "https://xerodegrees.com/wp-content/uploads/2022/10/X-veg-.jpg"
       }
     ]
+  },
+  {
+    "name":"Gilys104",
+    "address":"65, Jyoti Nivas College Rd, 5th Block, Koramangala, Bengaluru, Karnataka 560095",
+    "delivery_charge": 100,
+    "image":"https://gilleys.com/cdn/shop/files/GilleysLogo-reg-01.png?height=628&pad_color=EFECEC&v=1632943658&width=1200",
+
+    "hours":{
+      "Sunday":"12:00 pM - 1:00 AM",
+      "Monday":"12:00 pM - 11:00 PM",
+      "Tuesday":"12:00 pM - 11:00 PM",
+      "Wednesday":"12:00 pM - 11:00 PM",
+      "Thursday":"12:00 pM - 1:00 AM",
+      "Friday":"12:00 pM - 1:00 AM",
+      "Saturday":"12:00 pM - 1:00 AM"
+    },
+    "menus": [
+      {
+        "name": "Garlic chilli pops",
+        "price": 465.00,
+        "url": "https://lh3.googleusercontent.com/Fkgqzrr_oTWvbQGHZgCx_PAmWNjvA6dW__tliFe7XD9i04fyEsHWrheoKHfc3-AUWhp-iCC3HJjiC9YzqXStOq1iWZeeNedI6UyCyQU=w512-rw"
+      },
+      {
+        "name": "white sauce pasta",
+        "price": 567.00,
+        "url": "https://www.indianveggiedelight.com/wp-content/uploads/2022/12/white-sauce-pasta-featured.jpg"
+      },
+      {
+        "name": "Ghee roasted chicken",
+        "price": 639.99,
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbroICAOq4BvSAlYPBZJyjDh4lBvR4Cmv4p2xkfb1VWQ&s"
+      },
+      {
+        "name": "Mushroom pops",
+        "price": 399.99,
+        "url": "https://i.ytimg.com/vi/VNqGtZqHL8s/sddefault.jpg"
+      },
+      {
+        "name": "peri peri cheese fries ",
+        "price": 340.00,
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGOWXqkdDL8XktH0xaU2_dNZWeDekjDl7Sh4hE3muiLg&s"
+      },
+      {
+        "name": "mexican nachos",
+        "price": 319.00,
+        "url": "https://media-cdn.tripadvisor.com/media/photo-s/0f/16/1c/49/mexican-veg-nachos.jpg"
+      },
+      {
+        "name": "Chicken pizza",
+        "price": 679.00,
+        "url": "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2022/02/bbq-chicken-pizza-1.jpg"
+      },
+
+      {
+        "name": "Pan fried dumplings",
+        "price": 249.99,
+        "url": "https://xerodegrees.in/wp-content/uploads/2023/03/Xero-Degrees-strips.jpg"
+      },
+      {
+        "name": "veg burger",
+        "price": 250.99,
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK58l8lGWiyGrN_CWBeShDjsPFCYqxI86e8BDGoJA7Qw&s"
+      }
+    ]
+  },
+  {
+    "name":"Kapoor's cafe",
+    "address":"215, 7th Main Rd, HRBR Layout 2nd Block, HRBR Layout, Kalyan Nagar, Bengaluru, Karnataka 560043",
+    "delivery_charge": 100,
+    "image":"https://lh3.googleusercontent.com/Bq9UXRZyKgND1YoD0TL5cOw8-1fdSEtH2SbKlJoPpGboR7Q4sdPL9KlwY9OhsIn4OaqobJHzANY-_qdI8EaN7y3mBHN4",
+
+    "hours":{
+      "Sunday":"12:00 pM - 12:00 AM",
+      "Monday":"12:00 pM - 11:00 PM",
+      "Tuesday":"12:00 pM - 11:00 PM",
+      "Wednesday":"12:00 pM - 11:00 PM",
+      "Thursday":"12:00 pM - 12:00 AM",
+      "Friday":"12:00 pM - 12:00 AM",
+      "Saturday":"12:00 pM - 12:00 AM"
+    },
+    "menus": [
+      {
+        "name": "Shahi panner",
+        "price": 465.00,
+        "url": "https://static.toiimg.com/thumb/52446409.cms?width=1200&height=900"
+      },
+      {
+        "name": "Pinde chole",
+        "price": 200.00,
+        "url": "https://media.istockphoto.com/id/1428711976/photo/close-up-of-bowl-of-pindi-chole-or-amritsari-chole-isolated-on-dark-wooden-background.jpg?s=612x612&w=0&k=20&c=96_5uyCHe4nDr3B5ihvx6kvKzGF_a4nGWGYk41hXst4="
+      },
+      {
+        "name": "veg thali",
+        "price": 339.99,
+        "url": "https://t4.ftcdn.net/jpg/01/15/48/41/360_F_115484118_OFxvDHelhwIRAkNhXIfCZS6Py0eUyWJD.jpg"
+      },
+      {
+        "name": "plain rice",
+        "price": 140.99,
+        "url": "https://media.istockphoto.com/id/491090528/photo/cooked-rice.jpg?s=612x612&w=0&k=20&c=WNeDEUEioyyk6FQZQrVMrtFMDVdtbwtK951eZ8q5FNY="
+      },
+      {
+        "name": "Aloo pyazz pratha ",
+        "price": 140.00,
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf27UpC7TfTEOYaTyB7WHyOQWMQ6pk6GAvcohU1USHDg&s"
+      },
+      {
+        "name": "mexican nachos",
+        "price": 319.00,
+        "url": "https://media-cdn.tripadvisor.com/media/photo-s/0f/16/1c/49/mexican-veg-nachos.jpg"
+      },
+      {
+        "name": "Chicken pizza",
+        "price": 679.00,
+        "url": "https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2022/02/bbq-chicken-pizza-1.jpg"
+      },
+
+      {
+        "name": "Pan fried dumplings",
+        "price": 249.99,
+        "url": "https://xerodegrees.in/wp-content/uploads/2023/03/Xero-Degrees-strips.jpg"
+      },
+      {
+        "name": "veg burger",
+        "price": 250.99,
+        "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK58l8lGWiyGrN_CWBeShDjsPFCYqxI86e8BDGoJA7Qw&s"
+      }
+    ]
   }
 ]
