@@ -19,9 +19,12 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SubscriptionActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private FirebaseAuth mAuth;
+    private SessionManager sessionManager;
     private RadioButton radioButton3;
     private RadioButton radioButton4;
     private RadioButton radioButton5;
@@ -37,7 +40,8 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mAuth = FirebaseAuth.getInstance();
+        sessionManager = new SessionManager(this);
         drawerLayout = findViewById(R.id.drawerLayout1);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -109,7 +113,16 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
         int id = item.getItemId(); // Get the ID of the clicked item
 
         switch (id) {
-            // Handle your navigation menu item clicks here
+            case R.id.login:
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    // User is logged in
+                    Toast.makeText(this, "User already logged in", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    startActivity(new Intent(SubscriptionActivity.this, SendOTPActivity.class));
+                }
+                break;
             case R.id.home:
                 startActivity(new Intent(SubscriptionActivity.this, MainActivity.class));
                 break;
@@ -123,10 +136,10 @@ public class SubscriptionActivity extends AppCompatActivity implements Navigatio
                 startActivity(new Intent(SubscriptionActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                // Perform logout action, e.g., clear session, preferences, etc.
-                // Then navigate to the login or send OTP activity
-                startActivity(new Intent(SubscriptionActivity.this, SendOTPActivity.class));
-                // Finish the current activity to prevent returning to it after logout
+                mAuth.signOut();
+                sessionManager.clearSession();
+                Intent intent = new Intent(SubscriptionActivity.this, SendOTPActivity.class);
+                startActivity(intent);
                 finish();
                 break;
         }

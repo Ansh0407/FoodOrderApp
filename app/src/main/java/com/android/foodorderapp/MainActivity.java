@@ -1,5 +1,6 @@
 package com.android.foodorderapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,13 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.foodorderapp.adapters.RestaurantListAdapter;
 import com.android.foodorderapp.model.RestaurantModel;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -29,9 +33,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RestaurantListAdapter.RestaurantListClickListener, NavigationView.OnNavigationItemSelectedListener {
-
+    private FirebaseAuth mAuth;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private SessionManager sessionManager;
+    private String phoneNumber;
+    private TextView navHeaderPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +46,29 @@ public class MainActivity extends AppCompatActivity implements RestaurantListAda
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        sessionManager = new SessionManager(this);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
 
-            drawerLayout = findViewById(R.id.drawerLayout);
-            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawerLayout.addDrawerListener(actionBarDrawerToggle);
-            actionBarDrawerToggle.syncState();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Hostel-Bites");
+        } else {
+            setTitle("Restaurant List");
+        }
 
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle("Hostel-Bites");
-            } else {
-                Log.e("RestaurantMenuActivity", "Action bar is null");
-                setTitle("Restaurant List");
-            }
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
 
-            NavigationView navigationView = findViewById(R.id.navigationView);
-            navigationView.setNavigationItemSelectedListener(this);
+//        Intent intent = getIntent();
+//        phoneNumber = intent.getStringExtra("mobile");
+//
+//        View headerView = navigationView.getHeaderView(0);
+//        navHeaderPhoneNumber = headerView.findViewById(R.id.nav_user_phone);
+//        navHeaderPhoneNumber.setText(String.format("+91-%s", phoneNumber));
 
         List<RestaurantModel> restaurantModelList = getRestaurantData();
         initRecyclerView(restaurantModelList);
@@ -95,14 +109,19 @@ public class MainActivity extends AppCompatActivity implements RestaurantListAda
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId(); // Get the ID of the clicked item
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
         switch (id) {
-            // Handle your navigation menu item clicks here
-            case R.id.home:
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
+            case R.id.login:
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    // User is logged in
+                    Toast.makeText(this, "User already logged in", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    startActivity(new Intent(MainActivity.this, SendOTPActivity.class));
+                }
                 break;
             case R.id.subscription:
                 startActivity(new Intent(MainActivity.this, SubscriptionActivity.class));
@@ -114,7 +133,11 @@ public class MainActivity extends AppCompatActivity implements RestaurantListAda
                 startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout CLicked !!", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                sessionManager.clearSession();
+                Intent intent = new Intent(MainActivity.this, SendOTPActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
         drawerLayout.closeDrawers(); // Close the drawer after handling the click

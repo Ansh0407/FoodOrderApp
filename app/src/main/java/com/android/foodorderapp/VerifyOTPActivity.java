@@ -40,7 +40,6 @@ public class VerifyOTPActivity extends AppCompatActivity {
         phoneNumber = intent.getStringExtra("mobile");
         verificationId = intent.getStringExtra("verificationId");
 
-
         TextView textMobile = findViewById(R.id.textMobile);
         textMobile.setText(String.format("+91-%s", getIntent().getStringExtra("mobile")));
 
@@ -118,6 +117,9 @@ public class VerifyOTPActivity extends AppCompatActivity {
                         new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                                Intent intent = new Intent(VerifyOTPActivity.this, MainActivity.class);
+                                intent.putExtra("mobile", phoneNumber);
+                                startActivity(intent);
                             }
 
                             @Override

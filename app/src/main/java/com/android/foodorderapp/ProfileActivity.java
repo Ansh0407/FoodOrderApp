@@ -16,15 +16,18 @@ import android.widget.Toast;
 
 import com.android.foodorderapp.adapters.OrderAdapter;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private FirebaseAuth mAuth;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private SessionManager sessionManager;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private OrderAdapter orderAdapter;
@@ -36,7 +39,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mAuth = FirebaseAuth.getInstance();
+        sessionManager = new SessionManager(this);
         drawerLayout = findViewById(R.id.drawerLayout1);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -78,6 +82,18 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         int id = item.getItemId();
 
         switch (id) {
+
+            case R.id.login:
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    // User is logged in
+                    Toast.makeText(this, "User already logged in", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    startActivity(new Intent(ProfileActivity.this, SendOTPActivity.class));
+                }
+                break;
+
             case R.id.home:
                 startActivity(new Intent(ProfileActivity.this, MainActivity.class));
                 break;
@@ -91,7 +107,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(new Intent(ProfileActivity.this, AboutUsActivity.class));
                 break;
             case R.id.logout:
-                startActivity(new Intent(ProfileActivity.this, SendOTPActivity.class));
+                mAuth.signOut();
+                sessionManager.clearSession();
+                Intent intent = new Intent(ProfileActivity.this, SendOTPActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
 

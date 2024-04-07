@@ -16,9 +16,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AboutUsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private FirebaseAuth mAuth;
+    private SessionManager sessionManager;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -28,7 +31,8 @@ public class AboutUsActivity extends AppCompatActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
-
+        mAuth = FirebaseAuth.getInstance();
+        sessionManager = new SessionManager(this);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -83,7 +87,16 @@ public class AboutUsActivity extends AppCompatActivity implements NavigationView
         int id = item.getItemId(); // Get the ID of the clicked item
 
         switch (id) {
-            // Handle your navigation menu item clicks here
+            case R.id.login:
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    // User is logged in
+                    Toast.makeText(this, "User already logged in", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    startActivity(new Intent(AboutUsActivity.this, SendOTPActivity.class));
+                }
+                break;
             case R.id.home:
                 startActivity(new Intent(AboutUsActivity.this, MainActivity.class));
                 break;
@@ -96,7 +109,11 @@ public class AboutUsActivity extends AppCompatActivity implements NavigationView
             case R.id.about_us:
                 break;
             case R.id.logout:
-                startActivity(new Intent(AboutUsActivity.this, SendOTPActivity.class));
+                mAuth.signOut();
+                sessionManager.clearSession();
+                Intent intent = new Intent(AboutUsActivity.this, SendOTPActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
         drawerLayout.closeDrawers();

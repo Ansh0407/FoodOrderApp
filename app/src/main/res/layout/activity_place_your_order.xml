@@ -198,7 +198,7 @@
                     android:layout_marginBottom="05dp"
                     android:hint="Enter your warden no"
                     android:inputType="number"
-                    android:maxLength="5"
+                    android:maxLength="10"
                     android:visibility="gone"/>
 
                 <TextView android:id="@+id/tvTotalItems"
