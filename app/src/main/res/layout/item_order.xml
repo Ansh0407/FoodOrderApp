@@ -21,22 +21,34 @@
                 android:text="Order ID" />
 
             <TextView
-                android:id="@+id/foodTypeTextView"
+                android:id="@+id/customerNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Food Type" />
+                android:text="Customer Name" />
 
             <TextView
-                android:id="@+id/dateTextView"
+                android:id="@+id/deliveryCityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date" />
+                android:text="Delivery City" />
 
             <TextView
-                android:id="@+id/timeTextView"
+                android:id="@+id/restaurantNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time" />
+                android:text="Restaurant Name" />
+
+            <TextView
+                android:id="@+id/itemsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Items" />
+
+            <TextView
+                android:id="@+id/totalAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Amount" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

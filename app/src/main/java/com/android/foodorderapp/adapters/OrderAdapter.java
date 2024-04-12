@@ -4,13 +4,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.foodorderapp.Order;
 import com.android.foodorderapp.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,25 +39,31 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
-
         private TextView orderIdTextView;
-        private TextView foodTypeTextView;
-        private TextView dateTextView;
-        private TextView timeTextView;
+        private TextView customerNameTextView;
+        private TextView deliveryCityTextView;
+        private TextView restaurantNameTextView;
+        private TextView itemsTextView;
+        private TextView totalAmountTextView;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             orderIdTextView = itemView.findViewById(R.id.orderIdTextView);
-            foodTypeTextView = itemView.findViewById(R.id.foodTypeTextView);
-            dateTextView = itemView.findViewById(R.id.dateTextView);
-            timeTextView = itemView.findViewById(R.id.timeTextView);
+            customerNameTextView = itemView.findViewById(R.id.customerNameTextView);
+            deliveryCityTextView = itemView.findViewById(R.id.deliveryCityTextView);
+            restaurantNameTextView = itemView.findViewById(R.id.restaurantNameTextView);
+            itemsTextView = itemView.findViewById(R.id.itemsTextView);
+            totalAmountTextView = itemView.findViewById(R.id.totalAmountTextView);
         }
 
         public void bind(Order order) {
-            orderIdTextView.setText(order.getOrderId());
-            foodTypeTextView.setText(order.getFoodType());
-            dateTextView.setText(order.getDate());
-            timeTextView.setText(order.getTime());
+            orderIdTextView.setText(String.valueOf(order.getId()));
+            customerNameTextView.setText(order.getCustomerName());
+            deliveryCityTextView.setText(order.getDeliveryCity());
+            restaurantNameTextView.setText(order.getRestaurantName());
+            itemsTextView.setText(order.getItems());  // You may format this as needed
+            totalAmountTextView.setText(String.valueOf(order.getTotalAmount())); // Convert float to String
         }
     }
 }
+

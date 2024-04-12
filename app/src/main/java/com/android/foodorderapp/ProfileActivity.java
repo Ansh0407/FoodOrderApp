@@ -31,11 +31,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private OrderAdapter orderAdapter;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        dbHelper = new DatabaseHelper(this);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,19 +65,16 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         orderAdapter = new OrderAdapter();
         recyclerView.setAdapter(orderAdapter);
 
-        // Add sample orders
-        // Add sample orders
-        List<Order> orders = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 9; i++) {
-            String orderId = "Order ID: #" + (100000 + random.nextInt(900000)); // Generate random 6-digit order IDs
-            String customerName = "Customer " + (i + 1);
-            String foodItem = "Food Item " + (i + 1);
-            String deliveryAddress = "Address " + (i + 1);
-            orders.add(new Order(orderId, customerName, foodItem, deliveryAddress));
-        }
-        orderAdapter.setOrders(orders);
 
+        loadOrdersFromDatabase(); // Load orders from SQLite database
+
+
+    }
+
+    private void loadOrdersFromDatabase() {
+        List<Order> orderList = dbHelper.getAllOrders(); // Retrieve orders from DBHelper
+        orderAdapter.setOrders(orderList); // Update the adapter with retrieved orders
+        orderAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -1,14 +1,4 @@
 package com.android.foodorderapp;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,15 +13,37 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.foodorderapp.adapters.PlaceYourOrderAdapter;
 import com.android.foodorderapp.model.Menu;
 import com.android.foodorderapp.model.RestaurantModel;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 public class PlaceYourOrderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PaymentResultListener {
 
     private EditText inputName, inputAddress, inputCity, inputZip;
@@ -48,11 +60,15 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
     private Toolbar toolbar;
     private TextView selectfloor;
     private TextView selecthostel;
+    private DatabaseHelper dbHelper; // Add this line
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_your_order);
+
+        // Initialize DatabaseHelper
+        dbHelper = new DatabaseHelper(this);
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -197,6 +213,51 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
 
         return (int) subTotalAmount;
     }
+    private void sendOrderToServer() {
+        // Check if restaurantModel is initialized
+        if (restaurantModel == null) {
+            Toast.makeText(this, "Error: Restaurant data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Get selected items and quantities from the restaurantModel
+        List<Menu> selectedItems = new ArrayList<>();
+        for (Menu item : restaurantModel.getMenus()) {
+            if (item.getTotalInCart() > 0) {
+                selectedItems.add(item);
+            }
+        }
+
+        // Prepare data to send to the server
+        String customerName = inputName.getText().toString().trim();
+        String deliveryCity = inputCity.getText().toString().trim();
+        String restaurantName = restaurantModel.getName();
+        JSONArray itemsArray = new JSONArray();
+        for (Menu item : selectedItems) {
+            JSONObject itemObj = new JSONObject();
+            try {
+                itemObj.put("name", item.getName());
+                itemObj.put("quantity", item.getTotalInCart());
+                itemsArray.put(itemObj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Calculate total amount
+        float totalAmount = calculateTotalAmount1();
+
+        // Save data to SQLite database
+        long newRowId = dbHelper.addOrder(customerName, deliveryCity, restaurantName, itemsArray.toString(), totalAmount);
+
+        if (newRowId != -1) {
+            Toast.makeText(this, "Order saved to database", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error saving order to database", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     private void initRecyclerView() {
         cartItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -222,6 +283,7 @@ public class PlaceYourOrderActivity extends AppCompatActivity implements Navigat
         Intent i = new Intent(PlaceYourOrderActivity.this, OrderSucceessActivity.class);
         i.putExtra("RestaurantModel", restaurantModel);
         startActivityForResult(i, 1000);
+        sendOrderToServer();
     }
 
     @Override
