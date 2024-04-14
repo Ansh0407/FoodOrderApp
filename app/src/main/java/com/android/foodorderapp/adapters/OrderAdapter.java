@@ -10,6 +10,9 @@ import com.android.foodorderapp.Order;
 import com.android.foodorderapp.R;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
@@ -61,9 +64,26 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             customerNameTextView.setText(order.getCustomerName());
             deliveryCityTextView.setText(order.getDeliveryCity());
             restaurantNameTextView.setText(order.getRestaurantName());
-            itemsTextView.setText(order.getItems());  // You may format this as needed
-            totalAmountTextView.setText(String.valueOf(order.getTotalAmount())); // Convert float to String
+            itemsTextView.setText(order.getItems());
+            displayItems(order.getItems());
+            totalAmountTextView.setText(String.valueOf(order.getTotalAmount()));
         }
+        private void displayItems(String itemsJson) {
+            try {
+                JSONArray jsonArray = new JSONArray(itemsJson);
+                StringBuilder itemsText = new StringBuilder();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject itemObject = jsonArray.getJSONObject(i);
+                    String itemName = itemObject.getString("name");
+                    int itemQuantity = itemObject.getInt("quantity");
+                    itemsText.append(itemName).append(" x").append(itemQuantity).append("\n");
+                }
+                itemsTextView.setText(itemsText.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
 
