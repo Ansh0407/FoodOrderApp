@@ -35,6 +35,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements RestaurantListAdapter.RestaurantListClickListener, NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;
     private DrawerLayout drawerLayout;
+    private RecyclerView recyclerView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private SessionManager sessionManager;
     private String phoneNumber;
@@ -52,7 +53,17 @@ public class MainActivity extends AppCompatActivity implements RestaurantListAda
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        recyclerView = findViewById(R.id.recyclerView);
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // User is logged in, show RecyclerView
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            // User is not logged in, hide RecyclerView
+            recyclerView.setVisibility(View.GONE);
+            Toast.makeText(this, "Please login to see restaurants", Toast.LENGTH_LONG).show();
+        }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Hostel-Bites");
@@ -63,12 +74,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListAda
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        Intent intent = getIntent();
-//        phoneNumber = intent.getStringExtra("mobile");
-//
-//        View headerView = navigationView.getHeaderView(0);
-//        navHeaderPhoneNumber = headerView.findViewById(R.id.nav_user_phone);
-//        navHeaderPhoneNumber.setText(String.format("+91-%s", phoneNumber));
 
         List<RestaurantModel> restaurantModelList = getRestaurantData();
         initRecyclerView(restaurantModelList);
